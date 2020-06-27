@@ -10,7 +10,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 
-namespace SeleniumJenkinsTasks
+namespace SeleniumJenkinsTests
 {
     [TestFixture]
     [Category("Jenkins Tests"), Category("NUnit")]
