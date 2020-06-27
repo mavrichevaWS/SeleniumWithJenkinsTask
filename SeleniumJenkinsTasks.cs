@@ -61,8 +61,6 @@ namespace SeleniumJenkinsTests
             IWebElement findProfileName = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("span.uname")));
             string profileName = findProfileName.Text;
             Assert.IsTrue(profileName == isItAuthorized);
-
-            driver.Quit();
         }
 
         // Options select test
