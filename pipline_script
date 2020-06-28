@@ -1,0 +1,18 @@
+node {
+    stage 'Restore Nuget'
+        bat label: '', script: '"C:\\Users\\user\\source\\repos\\SeleniumJenkins\\Jenkins\\nuget.exe" restore "C:\\Users\\user\\source\\repos\\SeleniumJenkins\\SeleniumJenkinsTasks\\SeleniumJenkinsTasks.sln"'
+    stage 'Build'
+        bat "\"${tool 'MSBuild'}\" C:\\Users\\user\\source\\repos\\SeleniumJenkins\\SeleniumJenkinsTasks\\SeleniumJenkinsTasks.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+}
+stage 'Parallel Test'
+parallel firefox: {
+    node('master') {
+        bat label: '', script: '"C:\\Program Files (x86)\\NUnit.org\\nunit-console\\nunit3-console.exe" --testparam:Browser=Firefox "C:\\Users\\user\\source\\repos\\SeleniumJenkins\\SeleniumJenkinsTasks\\bin\\Debug\\SeleniumJenkinsTasks.dll"'
+        allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+    }
+}, chrome: {
+    node ("Node") {
+        bat label: '', script: '"C:\\Program Files (x86)\\NUnit.org\\nunit-console\\nunit3-console.exe" --testparam:Browser=Chrome "C:\\Users\\user\\source\\repos\\SeleniumJenkins\\SeleniumJenkinsTasks\\bin\\Debug\\SeleniumJenkinsTasks.dll"'
+        allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+    }
+}
